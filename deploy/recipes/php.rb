@@ -4,8 +4,9 @@
 #
 
 include_recipe 'deploy'
-include_recipe "mod_php5_apache2"
-include_recipe "mod_php5_apache2::php"
+#TODO: Pravotin-12/28: Need to use a if block based on server parameter to either start apache mods or not.
+#include_recipe "mod_php5_apache2"
+#include_recipe "mod_php5_apache2::php"
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'php'

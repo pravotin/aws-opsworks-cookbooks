@@ -57,6 +57,14 @@ template "nginx.conf" do
   mode 0644
 end
 
+template "php-test-file" do
+  path "/usr/share/nginx/#{node[:nginx][:root_suffix]}/info.php"
+  source "php.info.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 template "#{node[:nginx][:dir]}/sites-available/default" do
   source "default-site.erb"
   owner "root"
