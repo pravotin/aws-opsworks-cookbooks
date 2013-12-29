@@ -14,6 +14,9 @@ node[:deploy].each do |application, deploy|
     next
   end
 
+  #Run composer to pull dependencies. 
+  include_recipe 'php::composer'
+
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]
