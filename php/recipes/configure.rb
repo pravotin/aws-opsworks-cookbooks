@@ -23,6 +23,14 @@ node[:deploy].each do |application, deploy|
   end
 
   #Run composer to pull dependencies.
-  include_recipe 'php::composer'
+  script "install_composer" do
+    interpreter "bash"
+    user "root"
+    cwd "#{deploy[:deploy_to]}/current"
+    code <<-EOH
+    curl -s https://getcomposer.org/installer | php
+    php composer.phar install -n --optimize-autoloader --prefer-source
+    EOH
+  end
 
 end

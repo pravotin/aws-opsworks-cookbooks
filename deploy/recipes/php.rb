@@ -14,9 +14,6 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  #Run composer to pull dependencies. 
-  include_recipe 'php::composer'
-
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]
@@ -27,5 +24,17 @@ node[:deploy].each do |application, deploy|
     deploy_data deploy
     app application
   end
+
+  #Run PHP Composer for this PHP app.
+  script "install_composer" do
+    interpreter "bash"
+    user "root"
+    cwd "#{deploy[:deploy_to]}/current"
+    code <<-EOH
+    curl -s https://getcomposer.org/installer | php
+    php composer.phar install -n --optimize-autoloader --prefer-source
+    EOH
+  end
+
 end
 
